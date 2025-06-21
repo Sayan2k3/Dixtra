@@ -10,8 +10,8 @@ function isPriority(postText) {
   );
 }
 
-// New route path: /social-media/:disasterId
-router.get('/social-media/:disasterId', (req, res) => {
+// ✅ Fixed route: parameter comes first to avoid path-to-regexp crash
+router.get('/:disasterId/social-media', (req, res) => {
   const mockSocialData = {
     '123': [
       {
