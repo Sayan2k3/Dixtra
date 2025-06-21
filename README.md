@@ -22,6 +22,20 @@
 
 ---
 
+## 👨‍💻 Cursor (AI Code Editor)
+
+ - Cursor was used as an AI assistant to streamline the full-stack development process:
+
+ - Generated boilerplate for OfficialUpdates.jsx, SocialMedia.jsx, and the AI Bot modal
+
+ - Helped debug REST API route conflicts and enhanced error-handling in Express
+
+ - Assisted in crafting regex parsing for geolocation from PostGIS format
+
+ - Suggested modular CSS layouts and responsive improvements for cards and tables
+
+---
+
 ## 🛠️ Tech Stack
 
 | Frontend      | Backend         | Database   | Others                  |
