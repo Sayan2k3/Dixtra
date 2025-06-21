@@ -1,13 +1,18 @@
 // backend/controllers/aiController.js
 const axios = require('axios');
+require('dotenv').config(); // Ensure environment variables are loaded
 
-const GEMINI_API_KEY = 'AIzaSyB1M11R-XEz5QFDvgHBdUK58jdAqEywhZI'; // ✅ Replace this with env in production
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 exports.getSafetyTips = async (req, res) => {
   const { disaster } = req.body;
 
   if (!disaster) {
     return res.status(400).json({ error: 'Missing disaster type' });
+  }
+
+  if (!GEMINI_API_KEY) {
+    return res.status(500).json({ error: 'Missing Gemini API Key in environment variables' });
   }
 
   try {
@@ -30,7 +35,7 @@ exports.getSafetyTips = async (req, res) => {
 
     res.json({ tips });
   } catch (err) {
-    console.error('Gemini error:', err.response?.data || err.message);
+    console.error('❌ Gemini API Error:', err.response?.data || err.message);
     res.status(500).json({ error: 'Failed to get tips from AI' });
   }
 };

@@ -4,10 +4,6 @@ const cheerio = require('cheerio');
 const router = express.Router();
 
 router.get('/official-updates', async (req, res) => {
-
-  
-  
-
   const femaURL = 'https://www.fema.gov/press-release';
   const rcURL = 'https://www.redcross.org/about-us/news-and-events.html';
 
@@ -15,17 +11,17 @@ router.get('/official-updates', async (req, res) => {
     const [femaRes, rcRes] = await Promise.all([
       axios.get(femaURL, {
         headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/119.0.0.0 Safari/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
           Accept: 'text/html',
         },
+        timeout: 5000,
       }),
       axios.get(rcURL, {
         headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/119.0.0.0 Safari/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
           Accept: 'text/html',
         },
+        timeout: 5000,
       }),
     ]);
 
@@ -35,20 +31,21 @@ router.get('/official-updates', async (req, res) => {
     const femaHeadlines = [];
     fema('.card__title a').each((i, el) => {
       if (i < 5) {
-        const title = fema(el).text().trim();
-        const link = 'https://www.fema.gov' + fema(el).attr('href');
-        femaHeadlines.push({ title, link });
+        femaHeadlines.push({
+          title: fema(el).text().trim(),
+          link: 'https://www.fema.gov' + fema(el).attr('href'),
+        });
       }
     });
 
     const rcHeadlines = [];
     rc('.masonry-tile a').each((i, el) => {
       if (i < 5) {
-        const title = rc(el).text().trim();
-        const link = rc(el).attr('href').startsWith('http')
-          ? rc(el).attr('href')
-          : 'https://www.redcross.org' + rc(el).attr('href');
-        rcHeadlines.push({ title, link });
+        const href = rc(el).attr('href') || '';
+        rcHeadlines.push({
+          title: rc(el).text().trim(),
+          link: href.startsWith('http') ? href : 'https://www.redcross.org' + href,
+        });
       }
     });
 

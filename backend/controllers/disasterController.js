@@ -10,21 +10,24 @@ exports.getAllDisasters = async (req, res) => {
 
     if (error) throw error;
 
-    // Extract latitude & longitude from GeoJSON
     const processed = data.map(d => {
       let lat = null, lon = null;
+
       if (d.location?.coordinates) {
         [lon, lat] = d.location.coordinates;
       } else if (typeof d.location === 'string') {
         const match = d.location.match(/POINT\(([-\d.]+) ([-\d.]+)\)/);
-        if (match) [lon, lat] = [parseFloat(match[1]), parseFloat(match[2])];
+        if (match) {
+          [lon, lat] = [parseFloat(match[1]), parseFloat(match[2])];
+        }
       }
+
       return { ...d, lat, lon };
     });
 
     res.json(processed);
   } catch (err) {
-    console.error('Error fetching disasters:', err);
+    console.error('❌ Error fetching disasters:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -51,7 +54,7 @@ exports.createDisaster = async (req, res) => {
             type: 'Point',
             coordinates: [parseFloat(lon), parseFloat(lat)],
           },
-        }
+        },
       ])
       .select();
 
@@ -59,7 +62,7 @@ exports.createDisaster = async (req, res) => {
 
     res.status(201).json(data[0]);
   } catch (err) {
-    console.error('Error creating disaster:', err);
+    console.error('❌ Error creating disaster:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -93,9 +96,10 @@ exports.updateDisaster = async (req, res) => {
       .single();
 
     if (error) throw error;
+
     res.json(data);
   } catch (err) {
-    console.error('Error updating disaster:', err);
+    console.error('❌ Error updating disaster:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -111,9 +115,10 @@ exports.deleteDisaster = async (req, res) => {
       .eq('id', id);
 
     if (error) throw error;
-    res.status(204).send();
+
+    res.status(204).send(); // No Content
   } catch (err) {
-    console.error('Error deleting disaster:', err);
+    console.error('❌ Error deleting disaster:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
