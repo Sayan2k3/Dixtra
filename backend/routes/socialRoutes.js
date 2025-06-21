@@ -1,6 +1,7 @@
-// Made with Cursor
+// backend/routes/socialRoutes.js
 const express = require('express');
 const router = express.Router();
+
 const PRIORITY_KEYWORDS = ['urgent', 'sos', 'emergency', 'help', 'asap', 'immediately'];
 
 function isPriority(postText) {
@@ -9,8 +10,8 @@ function isPriority(postText) {
   );
 }
 
-// Mock social posts with real disaster-related images (hosted externally)
-router.get('/:disasterId/social-media', (req, res) => {
+// New route path: /social-media/:disasterId
+router.get('/social-media/:disasterId', (req, res) => {
   const mockSocialData = {
     '123': [
       {
