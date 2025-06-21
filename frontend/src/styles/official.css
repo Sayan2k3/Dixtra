@@ -1,0 +1,29 @@
+.official-container {
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: auto;
+}
+.official-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.official-container section {
+  margin-bottom: 1.5rem;
+}
+.official-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+.official-container li {
+  margin-bottom: 0.6rem;
+}
+.official-container a {
+  text-decoration: none;
+  color: #0033cc;
+}
+.official-container a:hover {
+  text-decoration: underline;
+}
+.error {
+  color: red;
+}
